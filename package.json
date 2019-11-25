@@ -1,8 +1,8 @@
 {
-  "name": "keymanager",
-  "version": "0.0.1",
+  "name": "keymanager-cli",
+  "version": "0.0.2",
   "description": "keymanager CLI",
-  "private": true,
+  "private": false,
   "bin": {
     "keymanager": "bin/keymanager"
   },
