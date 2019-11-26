@@ -1,10 +1,11 @@
 {
   "name": "keymanager-cli",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "keymanager CLI",
+  "main": "src/cli.js",
   "private": false,
   "bin": {
-    "keymanager": "bin/keymanager"
+    "keymanager": "./bin/keymanager"
   },
   "scripts": {
     "format": "prettier --write **/*.{js,json} && standard --fix",
