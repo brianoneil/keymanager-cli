@@ -22,6 +22,13 @@ Description: Upload the configuration to parameter store
 
 ## Usage:
 
+You can clone the repo locally and run the following command to make it available to your machine
+
+```bash
+yarn link
+```
+
+
 Get the configuration from Parameter Store to run locally
 
 ```bash
