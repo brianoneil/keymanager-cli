@@ -26,6 +26,7 @@
   "dependencies": {
     "aws-param-store": "^3.1.0",
     "aws-sdk": "^2.578.0",
+    "boxen": "^4.1.0",
     "debug": "^4.1.1",
     "gluegun": "latest",
     "ora": "^4.0.3"

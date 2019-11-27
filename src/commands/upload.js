@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const boxen = require('boxen');
 const awsParamStore = require('aws-param-store');
 
 const defaultConfig = './config.json';
@@ -20,7 +21,7 @@ const command = {
     description: `upload the configuration to parameter store`,
     run: async toolbox => {
         const { print, parameters, prompt } = toolbox
-        let { overwrite, appKey } = parameters.options;
+        let { overwrite, appKey, region } = parameters.options;
 
         if (!appKey) {
             if (process.env.AWS_KEYNAME) {
@@ -37,6 +38,32 @@ const command = {
             }
         }
 
+        print.info(boxen(`Using AWS_PROFILE: ${process.env.AWS_PROFILE}`, {padding : 1}));
+
+        if (!region) {
+
+            if (process.env.AWS_REGION) {
+                print.debug(`using process.env.AWS_REGION ${process.env.AWS_REGION }`)
+                region = process.env.AWS_REGION
+            }
+            else {
+                const result = await prompt.ask({
+                    type: 'input',
+                    name: 'region',
+                    message: `No region set.  Please enter the AWS_REGION!`,
+                })
+                if (result && result.region) {
+                    region = result.region;
+
+                    //set the region for the process
+                    process.env.AWS_REGION = region;
+                }
+            }
+        }
+        else {
+            process.env.AWS_REGION = region;
+        }
+
         let configFile = defaultConfig;
 
         if (!parameters.first) {
@@ -51,7 +78,7 @@ const command = {
 
         const writeOptions = { key: `/${appKey}`, filepath: configFile };
 
-        print.debug(JSON.stringify(writeOptions, null, 4));
+        //print.debug(JSON.stringify(writeOptions, null, 4));
 
         putBuffer(writeOptions)
 
