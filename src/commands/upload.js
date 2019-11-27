@@ -43,7 +43,7 @@ const command = {
         if (!region) {
 
             if (process.env.AWS_REGION) {
-                print.debug(`using process.env.AWS_REGION ${process.env.AWS_REGION }`)
+                //print.debug(`using process.env.AWS_REGION ${process.env.AWS_REGION }`)
                 region = process.env.AWS_REGION
             }
             else {
@@ -64,7 +64,7 @@ const command = {
             process.env.AWS_REGION = region;
         }
 
-        let configFile = defaultConfig;
+        let configFile = parameters.first || defaultConfig;
 
         if (!parameters.first) {
             //no file specified, promt for it
