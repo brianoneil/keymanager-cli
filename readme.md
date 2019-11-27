@@ -33,6 +33,16 @@ keymanager upload ./localconfig.json --appKey keymanager/test-dev --region us-ea
 
 ```
 
+*NOTE:* To use this CLI you must have valid credentials set on your machine.  Typically this is done using the following command.
+
+```bash
+
+docker run -it -v "$HOME/.aws:/aws" turnerlabs/samlkeygen authenticate --all-accounts \
+--url 'https://sts.turner.com/adfs/ls/IdpInitiatedSignOn.aspx?loginToRp=urn:amazon:webservices' \
+--domain Turner --user [your_user_name]
+
+```
+
 ## Built with Glue Gun
 
 Check out the documentation at https://github.com/infinitered/gluegun/tree/master/docs.
