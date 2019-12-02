@@ -20,7 +20,7 @@ const command = {
     alias: ['write', 'u', 'put'],
     description: `upload the configuration to parameter store`,
     run: async toolbox => {
-        const { print, parameters, prompt } = toolbox
+        const { print, parameters, prompt, filesystem } = toolbox
         let { overwrite, appKey, region } = parameters.options;
 
         if (!appKey) {
@@ -40,6 +40,34 @@ const command = {
 
         print.info(boxen(`Using AWS_PROFILE: ${process.env.AWS_PROFILE}`, {padding : 1}));
 
+        const result = await prompt.ask({
+            type : 'confirm',
+            name : 'useProfile',
+            message : `Do you want to use: ${process.env.AWS_PROFILE}?`
+        })
+        if(result && !result.useProfile) {
+
+            const findCreds = /\[(?:(?!\]).)*/g
+
+            const home = process.env.HOME;
+            const credsPath = `${home}/.aws/credentials`;
+
+            if (filesystem.exists(credsPath)) {
+                const creds = filesystem.read(credsPath);
+                const m = creds.match(findCreds).map(s => s.replace('[', ''));
+                
+                const r = await prompt.ask({
+                    type : 'select',
+                    name : 'profile',
+                    message : 'Which profile?',
+                    choices : m
+                })
+                if(r && r.profile) {
+                    process.env.AWS_PROFILE = r.profile;
+                }
+            }
+        }
+
         if (!region) {
 
             if (process.env.AWS_REGION) {
@@ -48,9 +76,20 @@ const command = {
             }
             else {
                 const result = await prompt.ask({
-                    type: 'input',
+                    type: 'select',
                     name: 'region',
                     message: `No region set.  Please enter the AWS_REGION!`,
+                    choices: [
+                        `us-east-2`,
+                        `us-east-1`,
+                        `us-west-1`,
+                        `us-west-2`,
+                        // `eu-central-1`,
+                        // `eu-west-1`,
+                        // `eu-west-2`,
+                        // `eu-west-3`,
+                        // `eu-north-1`,
+                    ]
                 })
                 if (result && result.region) {
                     region = result.region;
