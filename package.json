@@ -13,7 +13,8 @@
     "test": "jest",
     "watch": "jest --watch",
     "snapupdate": "jest --updateSnapshot",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "postinstall": "npm link"
   },
   "files": [
     "src",
