@@ -35,7 +35,7 @@ const command = {
     run: async toolbox => {
         const { print, parameters, prompt, filesystem } = toolbox
 
-        let { overwrite, appKey, region, y } = parameters.options;
+        let { overwrite, appKey, region, y, profile } = parameters.options;
 
         if (!appKey) {
             if (process.env.AWS_KEYNAME) {
@@ -52,37 +52,42 @@ const command = {
             }
         }
 
-        print.info(boxen(`Using AWS_PROFILE: ${process.env.AWS_PROFILE}`, { padding: 1 }));
+        if(!profile) {
+            if (!y) {
+                const result = await prompt.ask({
+                    type: 'confirm',
+                    name: 'useProfile',
+                    message: `Do you want to use: ${process.env.AWS_PROFILE}?`
+                })
+                if (result && !result.useProfile) {
 
-        if(!y) {
-            const result = await prompt.ask({
-                type: 'confirm',
-                name: 'useProfile',
-                message: `Do you want to use: ${process.env.AWS_PROFILE}?`
-            })
-            if (result && !result.useProfile) {
+                    const findCreds = /\[(?:(?!\]).)*/g
 
-                const findCreds = /\[(?:(?!\]).)*/g
+                    const home = process.env.HOME;
+                    const credsPath = `${home}/.aws/credentials`;
 
-                const home = process.env.HOME;
-                const credsPath = `${home}/.aws/credentials`;
+                    if (filesystem.exists(credsPath)) {
+                        const creds = filesystem.read(credsPath);
+                        const m = creds.match(findCreds).map(s => s.replace('[', ''));
 
-                if (filesystem.exists(credsPath)) {
-                    const creds = filesystem.read(credsPath);
-                    const m = creds.match(findCreds).map(s => s.replace('[', ''));
-
-                    const r = await prompt.ask({
-                        type: 'select',
-                        name: 'profile',
-                        message: 'Which profile?',
-                        choices: m
-                    })
-                    if (r && r.profile) {
-                        process.env.AWS_PROFILE = r.profile;
+                        const r = await prompt.ask({
+                            type: 'select',
+                            name: 'profile',
+                            message: 'Which profile?',
+                            choices: m
+                        })
+                        if (r && r.profile) {
+                            process.env.AWS_PROFILE = r.profile;
+                        }
                     }
                 }
             }
         }
+        else {
+            process.env.AWS_PROFILE = profile;
+        }
+
+        print.info(boxen(`Using AWS_PROFILE: ${process.env.AWS_PROFILE}`, { padding: 1 }));
         
 
         if (!region) {
