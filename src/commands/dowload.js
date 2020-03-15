@@ -15,12 +15,13 @@ function putBuffer({ key: key, payload: payload }) {
 
 function get({ key: key }) {
     let results = awsParamStore.getParameterSync(key)
-    return JSON.parse(results.Value)
+    //return JSON.parse(results.Value)
+    return results.Value;
 }
 function write({ key: key, filename: filename }) {
     let filePayload = get({ key })
     try {
-        filePayload = JSON.stringify(filePayload, null, 4)
+        // filePayload = JSON.stringify(filePayload, null, 4)
         let fileReturn = fs.writeFileSync(`${filename}`, filePayload)
         return fileReturn
     } catch (error) {
