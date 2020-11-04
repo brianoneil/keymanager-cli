@@ -1,3 +1,5 @@
+###### WM Proprietary (Internal Use Only)
+
 # Key Manager CLI
 
 A CLI for managing configuration in AWS Parameter Store.
