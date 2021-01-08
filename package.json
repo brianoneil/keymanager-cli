@@ -1,5 +1,5 @@
 {
-  "name": "keymanager-cli",
+  "name": "@warnermediacode/keymanager-cli",
   "version": "0.1.0",
   "description": "keymanager CLI",
   "main": "src/cli.js",
@@ -7,13 +7,20 @@
   "bin": {
     "keymanager": "./bin/keymanager"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "format": "prettier --write **/*.{js,json} && standard --fix",
     "lint": "standard",
     "test": "jest",
     "watch": "jest --watch",
     "snapupdate": "jest --updateSnapshot",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "get-npmrc": "keymanager download ./.npmrc --appKey wme-gep/npmrc --profile ${AWS_PROFILE:=aws-wme-entertainment:aws-wme-entertainment-devops} --region us-east-1",
+    "install-local-km": "localKM(){ which keymanager; if ! command -v keymanager; then mkdir node_modules && ln -s bin node_modules/.bin; npm --prefix ./node_modules install -g git+ssh://git@github.com/warnermediacode/keymanager-cli.git; fi }; localKM",
+    "npmrc-init": "npm run install-local-km && npm run get-npmrc",
+    "clean": "git clean -dfx && npm run npmrc-init && rm node_modules/.bin && npm i"
   },
   "files": [
     "src",
