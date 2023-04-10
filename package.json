@@ -32,7 +32,7 @@
   "license": "MIT",
   "dependencies": {
     "aws-param-store": "^3.1.0",
-    "aws-sdk": "^2.578.0",
+    "aws-sdk": "^2.1354.0",
     "boxen": "^4.1.0",
     "debug": "^4.1.1",
     "gluegun": "latest",
