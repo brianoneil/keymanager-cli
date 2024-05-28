@@ -1,0 +1,42 @@
+omd_business_service:
+  # Name of the business service
+  # 
+  # If in Global Technology (wbd-streaming organization), must be one of:
+  #   ad-tech
+  #   beam-global-client-devices
+  #   boltcloud
+  #   boltpipeline
+  #   commerce
+  #   common
+  #   consumer
+  #   content
+  #   content-discovery
+  #   dai-engg
+  #   data-platforms
+  #   global-quality-assurance
+  #   live-streaming-services
+  #   media-supply-chain
+  #   ml-and-growth
+  #   observability
+  #   pacsec
+  #   playback-and-manifests
+  #   product-and-design
+  #   video-quality-of-experience
+  #
+  # If not in Global Technology, this should be the upper-level business service name. This groups
+  # multiple repositories together, generally under a business organizational structure. Minimally,
+  # this would differentiate business units such as hbo, cnn, wb-games, tvn, etc. 
+  name: <REPLACE_ME>
+
+omd_service:
+  # Name of the service. This is likely the name of the repository
+  name: keymanager-cli
+
+  # Description of the service. This might be the description of the repository
+  description: <REPLACE_ME>
+
+# Do not remove or alter
+omd_schema_version: v1.0.0
+
+# Used for tracking the repository in WBD inventory. Do not remove or alter the content.
+inventory_id: 980162270ee0cf69c2e3a0a0a87dd93d-e8e885e0931c2c609d3059f840c02b70
